@@ -56,11 +56,12 @@ export default function OnboardingPage() {
         const profileData = {
             ...profile,
             name: user.displayName || 'Anonymous',
-            email: user.email,
+            email: user.email || '',
             industry: formData.industry,
             experience: formData.experience,
             skills: skillsArray,
             bio: formData.bio,
+            isPro: profile?.isPro ?? false,
         };
 
         try {
@@ -210,7 +211,7 @@ export default function OnboardingPage() {
 }
 
 // Step Components
-const Step1 = ({ formData, handleChange }: { formData: any, handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => (
+const Step1 = ({ formData, handleChange }: { formData: { industry: string }, handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => (
     <div className="space-y-6">
         <div>
             <h2 className="text-2xl font-medium text-slate-900 font-heading tracking-tight mb-2">Industry Sector</h2>
@@ -235,7 +236,7 @@ const Step1 = ({ formData, handleChange }: { formData: any, handleChange: (e: Re
     </div>
 );
 
-const Step2 = ({ formData, handleChange }: { formData: any, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
+const Step2 = ({ formData, handleChange }: { formData: { experience: string }, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
     <div className="space-y-6">
         <div>
             <h2 className="text-2xl font-medium text-slate-900 font-heading tracking-tight mb-2">Experience Matrix</h2>
@@ -258,7 +259,7 @@ const Step2 = ({ formData, handleChange }: { formData: any, handleChange: (e: Re
     </div>
 );
 
-const Step3 = ({ formData, handleChange }: { formData: any, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
+const Step3 = ({ formData, handleChange }: { formData: { skills: string }, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
     <div className="space-y-6">
         <div>
             <h2 className="text-2xl font-medium text-slate-900 font-heading tracking-tight mb-2">Skill Inventory</h2>
@@ -285,7 +286,7 @@ const Step3 = ({ formData, handleChange }: { formData: any, handleChange: (e: Re
     </div>
 );
 
-const Step4 = ({ formData, handleChange }: { formData: any, handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void }) => (
+const Step4 = ({ formData, handleChange }: { formData: { bio: string }, handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void }) => (
     <div className="space-y-6">
         <div>
             <h2 className="text-2xl font-medium text-slate-900 font-heading tracking-tight mb-2">Professional Narrative</h2>
