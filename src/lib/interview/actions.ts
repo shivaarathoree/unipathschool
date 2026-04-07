@@ -1,11 +1,15 @@
 "use server";
 
 import { generateObject } from "ai";
-import { google } from "@ai-sdk/google";
-import { adminDb } from "@/lib/firebase-admin";
+import { createGroq } from "@ai-sdk/groq";
+import prisma from "@/lib/prisma";
 import { feedbackSchema } from "@/lib/interview/constants";
 import { getRandomInterviewCover } from "@/lib/interview/utils";
 import type { CreateInterviewFeedbackParams, GetFeedbackByInterviewIdParams, GetLatestInterviewsParams, InterviewFeedback, InterviewRecord } from "@/lib/interview/types";
+
+const groq = createGroq({
+    apiKey: process.env.GROQ_API_KEY,
+});
 
 // ─── FEEDBACK GENERATION ─────────────────────────────────────
 
@@ -21,58 +25,72 @@ export async function createInterviewFeedback(params: CreateInterviewFeedbackPar
             .join("");
 
         const { object } = await generateObject({
-            model: google("gemini-2.0-flash-001"),
+            model: groq("llama-3.3-70b-versatile"),
             schema: feedbackSchema,
             prompt: `
-        You are an AI interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories. Be thorough and detailed in your analysis. Don't be lenient with the candidate. If there are mistakes or areas for improvement, point them out.
-        Transcript:
-        ${formattedTranscript}
+You are a FAANG hiring committee member (Google HC, Meta E5+ bar raiser, or Amazon Bar Raiser) conducting a post-interview debrief. You are evaluating a candidate based on their mock interview transcript. You are known for your uncompromising standards and surgical precision in assessment.
 
-        Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided:
-        - **Communication Skills**: Clarity, articulation, structured responses.
-        - **Technical Knowledge**: Understanding of key concepts for the role.
-        - **Problem-Solving**: Ability to analyze problems and propose solutions.
-        - **Cultural & Role Fit**: Alignment with company values and job role.
-        - **Confidence & Clarity**: Confidence in responses, engagement, and clarity.
-        `,
+EVALUATION PRINCIPLES:
+- Apply the same bar as a Google L5 or Meta E5 hiring committee. A score of 70+ means "Strong Hire." Below 50 is "No Hire."
+- Do NOT inflate scores. Most candidates should score between 40-70. A perfect 100 is virtually impossible.
+- Be brutally specific in your feedback. Generic praise like "good communication" is unacceptable — cite exact moments from the transcript.
+- Identify missed opportunities: what a top-1% candidate would have said differently.
+- Strengths should highlight genuinely impressive moments only. If there are none, say so.
+- Areas for improvement should be actionable, specific, and reference industry-standard frameworks (STAR, system design principles, Big-O analysis, etc.)
+
+TRANSCRIPT:
+${formattedTranscript}
+
+Score the candidate from 0 to 100 in these categories (DO NOT add or rename categories):
+- Communication Skills: Did they structure responses using frameworks? Were answers concise yet comprehensive? Did they avoid rambling?
+- Technical Knowledge: Did they demonstrate depth beyond surface-level understanding? Did they reference trade-offs, edge cases, and production-scale considerations?
+- Problem Solving: Did they decompose problems systematically? Did they consider multiple approaches before committing? Did they validate their solution?
+- Cultural Fit: Did they demonstrate ownership, bias for action, and the ability to operate in ambiguity? Would you want them on your team?
+- Confidence and Clarity: Did they project authority without arrogance? Did they handle uncertainty gracefully?
+`,
             system:
-                "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
+                "You are an elite FAANG hiring committee member. Your evaluations are data-driven, citation-heavy, and hold candidates to the highest industry bar. You never give inflated scores. Your feedback reads like a Google HC packet review.",
         });
 
-        const feedback = {
-            interviewId,
-            userId,
+        // Use Prisma to insert/update feedback
+        let feedbackRecord;
+
+        const data = {
+            interviewId: interviewId,
+            userId: userId,
             totalScore: object.totalScore,
-            categoryScores: object.categoryScores,
+            categoryScores: typeof object.categoryScores === 'object' ? object.categoryScores : JSON.parse(JSON.stringify(object.categoryScores)),
             strengths: object.strengths,
             areasForImprovement: object.areasForImprovement,
             finalAssessment: object.finalAssessment,
-            createdAt: new Date().toISOString(),
         };
 
-        let feedbackRef;
-
         if (feedbackId) {
-            feedbackRef = adminDb.collection("feedback").doc(feedbackId);
+            feedbackRecord = await prisma.interviewFeedback.update({
+                where: { id: feedbackId },
+                data: data
+            });
         } else {
-            feedbackRef = adminDb.collection("feedback").doc();
+            feedbackRecord = await prisma.interviewFeedback.create({
+                data: data
+            });
         }
 
-        await feedbackRef.set(feedback);
-
-        return { success: true, feedbackId: feedbackRef.id };
-    } catch (error) {
+        return { success: true, feedbackId: feedbackRecord.id };
+    } catch (error: any) {
         console.error("Error saving feedback:", error);
-        return { success: false };
+        return { success: false, error: error.message || String(error) };
     }
 }
 
 // ─── INTERVIEW CRUD ──────────────────────────────────────────
 
 export async function getInterviewById(id: string): Promise<InterviewRecord | null> {
-    const interview = await adminDb.collection("interviews").doc(id).get();
-    if (!interview.exists) return null;
-    return { id: interview.id, ...interview.data() } as InterviewRecord;
+    const interview = await prisma.interview.findUnique({
+        where: { id }
+    });
+    if (!interview) return null;
+    return { ...interview, createdAt: interview.createdAt.toISOString() } as unknown as InterviewRecord;
 }
 
 export async function getFeedbackByInterviewId(
@@ -80,17 +98,16 @@ export async function getFeedbackByInterviewId(
 ): Promise<InterviewFeedback | null> {
     const { interviewId, userId } = params;
 
-    const querySnapshot = await adminDb
-        .collection("feedback")
-        .where("interviewId", "==", interviewId)
-        .where("userId", "==", userId)
-        .limit(1)
-        .get();
+    const feedbackDoc = await prisma.interviewFeedback.findFirst({
+        where: {
+            interviewId: interviewId,
+            userId: userId
+        }
+    });
 
-    if (querySnapshot.empty) return null;
+    if (!feedbackDoc) return null;
 
-    const feedbackDoc = querySnapshot.docs[0];
-    return { id: feedbackDoc.id, ...feedbackDoc.data() } as InterviewFeedback;
+    return { ...feedbackDoc, createdAt: feedbackDoc.createdAt.toISOString() } as unknown as InterviewFeedback;
 }
 
 export async function getLatestInterviews(
@@ -98,18 +115,19 @@ export async function getLatestInterviews(
 ): Promise<InterviewRecord[]> {
     const { userId, limit = 20 } = params;
 
-    const interviews = await adminDb
-        .collection("interviews")
-        .orderBy("createdAt", "desc")
-        .where("finalized", "==", true)
-        .where("userId", "!=", userId)
-        .limit(limit)
-        .get();
+    const interviews = await prisma.interview.findMany({
+        where: {
+            finalized: true,
+            userId: { not: userId }
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit
+    });
 
-    return interviews.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-    })) as InterviewRecord[];
+    return interviews.map((doc) => ({
+        ...doc,
+        createdAt: doc.createdAt.toISOString()
+    })) as unknown as InterviewRecord[];
 }
 
 export async function getInterviewsByUserId(
@@ -117,14 +135,13 @@ export async function getInterviewsByUserId(
 ): Promise<InterviewRecord[]> {
     if (!userId) return [];
 
-    const interviews = await adminDb
-        .collection("interviews")
-        .where("userId", "==", userId)
-        .orderBy("createdAt", "desc")
-        .get();
+    const interviews = await prisma.interview.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: 'desc' }
+    });
 
-    return interviews.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-    })) as InterviewRecord[];
+    return interviews.map((doc) => ({
+        ...doc,
+        createdAt: doc.createdAt.toISOString()
+    })) as unknown as InterviewRecord[];
 }

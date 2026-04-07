@@ -8,8 +8,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InterviewAgent from "@/components/interview/InterviewAgent";
 import IconifyIcon from "@/components/IconifyIcon";
-import { doc, getDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import ProFeatureGate from "@/components/ProFeatureGate";
+import { getInterviewById, getFeedbackByInterviewId } from "@/lib/interview/actions";
 
 interface InterviewData {
     id: string;
@@ -32,24 +32,20 @@ export default function InterviewSessionPage() {
 
         const fetchInterview = async () => {
             try {
-                const docRef = doc(db, "interviews", id);
-                const docSnap = await getDoc(docRef);
+                const interviewData = await getInterviewById(id);
 
-                if (docSnap.exists()) {
-                    setInterview({ id: docSnap.id, ...docSnap.data() } as InterviewData);
+                if (interviewData) {
+                    setInterview(interviewData as any);
                 }
 
-                if (user) {
-                    const feedbackQ = query(
-                        collection(db, "feedback"),
-                        where("interviewId", "==", id),
-                        where("userId", "==", user.uid),
-                        limit(1)
-                    );
-                    const feedbackSnap = await getDocs(feedbackQ);
-                    if (!feedbackSnap.empty) {
-                        setFeedbackId(feedbackSnap.docs[0].id);
-                    }
+                const currentUserId = user?.uid || "test-user-001";
+                const feedbackData = await getFeedbackByInterviewId({
+                    interviewId: id,
+                    userId: currentUserId
+                });
+                
+                if (feedbackData) {
+                    setFeedbackId(feedbackData.id);
                 }
             } catch (err) {
                 console.error("Error fetching interview:", err);
@@ -60,6 +56,10 @@ export default function InterviewSessionPage() {
 
         fetchInterview();
     }, [id, user, authLoading]);
+
+    if (!user) {
+        return <ProFeatureGate title="AI Interview Session" />;
+    }
 
     if (loading || authLoading) {
         return (
@@ -129,7 +129,7 @@ export default function InterviewSessionPage() {
                     <div className="glass rounded-[3rem] p-2 md:p-4 shadow-2xl border border-white/50 relative overflow-hidden">
                         <InterviewAgent
                             userName={user?.displayName || "Student"}
-                            userId={user?.uid}
+                            userId={user?.uid || "test-user-001"}
                             interviewId={id}
                             type="interview"
                             questions={interview.questions}

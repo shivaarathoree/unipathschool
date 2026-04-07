@@ -7,8 +7,8 @@ import { motion } from "framer-motion";
 
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewerConfig } from "@/lib/interview/constants";
-import { createInterviewFeedback } from "@/lib/interview/actions";
 import IconifyIcon from "@/components/IconifyIcon";
+import { createInterviewFeedback } from "@/lib/interview/actions";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -106,29 +106,41 @@ const InterviewAgent = ({
     useEffect(() => {
         const handleGenerateFeedback = async (msgs: SavedMessage[]) => {
             setGenerating(true);
-            const { success, feedbackId: id } = await createInterviewFeedback({
-                interviewId: interviewId!,
-                userId: userId!,
-                transcript: msgs,
-                feedbackId,
-            });
-
-            if (success && id) {
-                router.push(`/ai-interview/${interviewId}/feedback`);
-            } else {
-                console.log("Error saving feedback");
+            try {
+                const response = await createInterviewFeedback({
+                    interviewId: interviewId!,
+                    userId: userId!,
+                    transcript: msgs,
+                    feedbackId: feedbackId
+                });
+                
+                if (response.success && response.feedbackId) {
+                    router.push(`/ai-interview/${interviewId}/feedback`);
+                } else {
+                    console.error("Error from feedback API:", response.error);
+                    router.push("/ai-interview");
+                }
+            } catch (err) {
+                console.error("Error saving feedback:", err);
                 router.push("/ai-interview");
             }
         };
 
         if (callStatus === CallStatus.FINISHED) {
+            // If the call dropped instantly or no conversation happened, let the user try again
+            if (messages.length === 0 && !generating) {
+                console.warn("Call finished without any conversation. Resetting state so you can try again.");
+                setCallStatus(CallStatus.INACTIVE);
+                return;
+            }
+
             if (type === "generate") {
                 router.push("/ai-interview");
             } else {
                 handleGenerateFeedback(messages);
             }
         }
-    }, [callStatus, feedbackId, interviewId, messages, router, type, userId]);
+    }, [callStatus, feedbackId, interviewId, messages, router, type, userId, generating]);
 
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);

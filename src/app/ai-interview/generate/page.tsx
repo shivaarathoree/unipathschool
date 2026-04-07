@@ -8,6 +8,8 @@ import IconifyIcon from "@/components/IconifyIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import ProFeatureGate from "@/components/ProFeatureGate";
 import { useRouter } from "next/navigation";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function GenerateInterviewPage() {
     const { user, profile, loading } = useAuth();
@@ -32,7 +34,19 @@ export default function GenerateInterviewPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user) return;
+        
+        // Prevent accidental form submission on earlier steps (e.g. from pressing Enter)
+        if (step !== 3) {
+            if (!formData.role.trim()) {
+                setFormError("Please specify a job role.");
+            } else {
+                setFormError("");
+                setStep(s => Math.min(s + 1, 3));
+            }
+            return;
+        }
+
+        const currentUserId = user?.uid || "test-user-001";
         if (!formData.role.trim()) {
             setFormError("Please specify a job role.");
             setStep(1);
@@ -50,19 +64,22 @@ export default function GenerateInterviewPage() {
                     ...formData,
                     techstack: formData.techstack || "General",
                     amount: formData.numQuestions,
-                    userId: user.uid,
+                    userId: currentUserId,
                 }),
             });
             const data = await res.json();
-            if (data.success) {
-                router.push("/ai-interview");
+            if (data.success && data.interview) {
+                // Artificial delay to let the "Generating" state show for a better UX
+                setTimeout(() => {
+                    router.push("/ai-interview");
+                }, 2000);
             } else {
                 const errorMsg = typeof data.error === 'string' ? data.error : (data.error?.message || "Failed to generate interview. Please try again.");
                 setFormError(errorMsg);
+                setIsSubmitting(false);
             }
         } catch (err: any) {
             setFormError(typeof err === 'string' ? err : (err?.message || "A network error occurred. Please try again."));
-        } finally {
             setIsSubmitting(false);
         }
     };

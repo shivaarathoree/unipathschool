@@ -7,8 +7,7 @@ import IconifyIcon from "@/components/IconifyIcon";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getInterviewsByUserId, getLatestInterviews } from "@/lib/interview/actions";
 import { motion } from "framer-motion";
 import ProFeatureGate from "@/components/ProFeatureGate";
 
@@ -101,24 +100,16 @@ export default function AIInterviewDashboard() {
 
         const fetchInterviews = async () => {
             try {
-                const userQ = query(collection(db, "interviews"), where("userId", "==", user.uid));
-                const userSnap = await getDocs(userQ);
-                const userDocs = userSnap.docs.map((d) => ({ id: d.id, ...d.data() })) as InterviewData[];
-                userDocs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-                setUserInterviews(userDocs);
+                const userDocs = await getInterviewsByUserId(user.uid);
+                setUserInterviews(userDocs as any);
             } catch (err) {
                 const errorMessage = err instanceof Error ? err.message : "Unknown error";
                 setError("Could not load your interviews. " + errorMessage);
             }
 
             try {
-                const commQ = query(collection(db, "interviews"), where("finalized", "==", true));
-                const commSnap = await getDocs(commQ);
-                const commDocs = (commSnap.docs.map((d) => ({ id: d.id, ...d.data() })) as InterviewData[])
-                    .filter((i) => i.userId !== user.uid)
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                    .slice(0, 20);
-                setCommunityInterviews(commDocs);
+                const commDocs = await getLatestInterviews({ userId: user.uid, limit: 20 });
+                setCommunityInterviews(commDocs as any);
             } catch (err) { /* Silently fail on community interviews */ }
 
             setLoading(false);
@@ -142,7 +133,7 @@ export default function AIInterviewDashboard() {
         );
     }
 
-    if (!user || !profile || !isPro) {
+    if (!user || !profile) {
         return <ProFeatureGate title="AI Mock Interviews" />;
     }
 

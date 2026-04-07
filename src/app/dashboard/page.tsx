@@ -129,7 +129,7 @@ export default function DashboardPage() {
             <main className="max-w-7xl mx-auto px-6 pt-32 pb-20 space-y-12 relative z-10">
                 {/* Welcome Header */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                    <h1 className="text-5xl font-medium font-heading tracking-tighter text-slate-900">Welcome back, {profile.name.split(' ')[0]}.</h1>
+                    <h1 className="text-5xl font-medium font-heading tracking-tighter text-slate-900">Welcome back, {(profile?.name || user?.displayName || "User").split(' ')[0]}.</h1>
                     <p className="text-lg text-slate-500 font-light mt-2">Here is your personalized career intelligence dashboard.</p>
                 </motion.div>
 

@@ -8,9 +8,9 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import IconifyIcon from "@/components/IconifyIcon";
-import { doc, getDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getInterviewById, getFeedbackByInterviewId } from "@/lib/interview/actions";
 import { motion } from "framer-motion";
+import ProFeatureGate from "@/components/ProFeatureGate";
 
 interface InterviewData {
     id: string;
@@ -82,25 +82,23 @@ export default function InterviewFeedbackPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!id || authLoading || !user) return;
+        if (!id || authLoading) return;
+        const currentUserId = user?.uid || "test-user-001";
 
         const fetchData = async () => {
             try {
-                const interviewDoc = await getDoc(doc(db, "interviews", id));
-                if (interviewDoc.exists()) {
-                    setInterview({ id: interviewDoc.id, ...interviewDoc.data() } as InterviewData);
+                const interviewData = await getInterviewById(id);
+                if (interviewData) {
+                    setInterview(interviewData as any);
                 }
 
-                const feedbackQ = query(
-                    collection(db, "feedback"),
-                    where("interviewId", "==", id),
-                    where("userId", "==", user.uid),
-                    limit(1)
-                );
-                const feedbackSnap = await getDocs(feedbackQ);
-                if (!feedbackSnap.empty) {
-                    const feedbackDoc = feedbackSnap.docs[0];
-                    setFeedback({ id: feedbackDoc.id, ...feedbackDoc.data() } as FeedbackData);
+                const feedbackData = await getFeedbackByInterviewId({
+                    interviewId: id,
+                    userId: currentUserId
+                });
+                
+                if (feedbackData) {
+                    setFeedback(feedbackData as any);
                 }
             } catch (err) {
                 console.error("Error fetching feedback:", err);
@@ -111,6 +109,10 @@ export default function InterviewFeedbackPage() {
 
         fetchData();
     }, [id, user, authLoading]);
+
+    if (!user) {
+        return <ProFeatureGate title="Interview Feedback" />;
+    }
 
     if (loading || authLoading) {
         return (
