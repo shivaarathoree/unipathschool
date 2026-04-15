@@ -130,6 +130,7 @@ const InterviewAgent = ({
             // If the call dropped instantly or no conversation happened, let the user try again
             if (messages.length === 0 && !generating) {
                 console.warn("Call finished without any conversation. Resetting state so you can try again.");
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setCallStatus(CallStatus.INACTIVE);
                 return;
             }

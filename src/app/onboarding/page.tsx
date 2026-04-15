@@ -38,6 +38,7 @@ export default function OnboardingPage() {
 
     useEffect(() => {
         if (profile) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData({
                 industry: profile.industry || "",
                 experience: profile.experience || "",

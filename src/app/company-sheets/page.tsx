@@ -150,7 +150,7 @@ export default function CompanySheetsPage() {
                                 Which company should we add next?
                             </h2>
                             <p className="text-slate-400 text-sm font-light leading-relaxed mb-8 max-w-lg mx-auto">
-                                Submit a company name and we'll gather the most frequently asked interview questions for it. We're curating the complete collection!
+                                Submit a company name and we&apos;ll gather the most frequently asked interview questions for it. We&apos;re curating the complete collection!
                             </p>
 
                             {submitStatus === "success" ? (
@@ -160,7 +160,7 @@ export default function CompanySheetsPage() {
                                     className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-2xl flex items-center justify-center gap-3 max-w-sm mx-auto"
                                 >
                                     <IconifyIcon icon="solar:check-circle-bold-duotone" className="text-2xl" />
-                                    <span className="text-sm font-medium">Thanks! We've received your request.</span>
+                                    <span className="text-sm font-medium">Thanks! We&apos;ve received your request.</span>
                                 </motion.div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-sm mx-auto">
