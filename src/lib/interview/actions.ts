@@ -129,7 +129,7 @@ export async function getLatestInterviews(
             take: limit
         });
 
-        return interviews.map((doc) => ({
+        return interviews.map((doc: any) => ({
             ...doc,
             createdAt: doc.createdAt.toISOString()
         })) as unknown as InterviewRecord[];
@@ -150,7 +150,7 @@ export async function getInterviewsByUserId(
             orderBy: { createdAt: 'desc' }
         });
 
-        return interviews.map((doc) => ({
+        return interviews.map((doc: any) => ({
             ...doc,
             createdAt: doc.createdAt.toISOString()
         })) as unknown as InterviewRecord[];
