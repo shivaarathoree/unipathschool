@@ -1,0 +1,33 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "companyRequests",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "status",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "users",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "isPro",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "industry",
+                    "order": "ASCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

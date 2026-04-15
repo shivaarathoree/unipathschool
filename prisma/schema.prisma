@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Interview {
+  id          String   @id @default(uuid())
+  role        String
+  type        String
+  level       String
+  techstack   String[]
+  questions   String[]
+  userId      String   @map("user_id")
+  finalized   Boolean  @default(true)
+  coverImage  String?  @map("cover_image")
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  feedback    InterviewFeedback?
+
+  @@index([userId])
+}
+
+model InterviewFeedback {
+  id                  String   @id @default(uuid())
+  interviewId         String   @unique @map("interview_id")
+  userId              String   @map("user_id")
+  totalScore          Int      @map("total_score")
+  categoryScores      Json     @map("category_scores") // stores {communication: Int, technical: Int, etc}
+  strengths           String[]
+  areasForImprovement String[] @map("areas_for_improvement")
+  finalAssessment     String   @map("final_assessment")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  // Relations
+  interview           Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  @@index([interviewId])
+  @@index([userId])
+}
+
+model CompanyRequest {
+  id          String   @id @default(uuid())
+  companyName String
+  email       String?
+  status      String   @default("pending")
+  source      String   @default("server-action")
+  createdAt   DateTime @default(now()) @map("created_at")
+}
