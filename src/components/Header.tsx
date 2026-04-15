@@ -19,22 +19,22 @@ export default function Header() {
 
     return (
         <>
-            <header className="fixed top-6 w-full z-50 px-6 flex justify-center pointer-events-none">
+            <header className="fixed top-6 w-full z-50 px-4 sm:px-6 flex justify-center pointer-events-none">
                 <motion.div
                     initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-                    className="max-w-6xl w-full glass rounded-full h-16 flex items-center justify-between px-2 pr-4 pointer-events-auto group/nav shadow-[0_0.5rem_2rem_rgba(15,23,42,0.05)] border border-white/50"
+                    className="max-w-6xl w-full glass rounded-full h-14 sm:h-16 flex items-center justify-between px-2 pr-3 sm:pr-4 pointer-events-auto group/nav shadow-[0_0.5rem_2rem_rgba(15,23,42,0.05)] border border-white/50"
                 >
                     {/* Logo */}
-                    <div className="flex items-center pl-6 cursor-pointer group/logo relative">
+                    <div className="flex items-center pl-4 sm:pl-6 cursor-pointer group/logo relative">
                         <Link href="/" className="flex items-center gap-3 relative z-10">
                             <div className="flex items-center">
                                 <span className="w-4 h-px bg-slate-900 mr-2 group-hover/logo:w-6 group-hover/logo:bg-primary transition-all duration-500 ease-out"></span>
-                                <span className="font-heading font-semibold text-slate-900 group-hover/logo:text-primary transition-colors text-xl tracking-tighter">
+                                <span className="font-heading font-semibold text-slate-900 group-hover/logo:text-primary transition-colors text-lg sm:text-xl tracking-tighter">
                                     UNIPATH
                                 </span>
-                                <span className="font-heading font-light text-slate-500 ml-1 text-xl tracking-tighter">
+                                <span className="font-heading font-light text-slate-500 ml-1 text-lg sm:text-xl tracking-tighter hidden sm:inline">
                                     SCHOOL
                                 </span>
                                 <span className="w-1.5 h-4 bg-primary ml-1.5 opacity-80 animate-pulse group-hover/logo:opacity-100 group-hover/logo:shadow-[0_0_10px_#C2410C] transition-all"></span>
@@ -111,7 +111,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="fixed top-[5.5rem] left-6 right-6 z-40 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-[2rem] shadow-2xl shadow-slate-900/10 overflow-hidden pointer-events-auto"
+                        className="fixed top-[5rem] left-4 right-4 sm:left-6 sm:right-6 z-40 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-[2rem] shadow-2xl shadow-slate-900/10 overflow-hidden pointer-events-auto"
                     >
                         <nav className="flex flex-col p-4 gap-1">
                             {navLinks.map((link) => (

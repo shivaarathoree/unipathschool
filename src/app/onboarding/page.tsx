@@ -36,7 +36,6 @@ export default function OnboardingPage() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Pre-fill form if user is updating an existing profile
     useEffect(() => {
         if (profile) {
             setFormData({
@@ -49,7 +48,6 @@ export default function OnboardingPage() {
     }, [profile]);
 
     useEffect(() => {
-        // Only redirect completely unauthenticated users to login
         if (!loading && !user) {
             router.push("/login");
         }

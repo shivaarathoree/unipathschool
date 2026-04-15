@@ -32,7 +32,6 @@ export default function HowItWorksSection() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] h-[20rem] bg-primary/8 blur-[140px] rounded-full pointer-events-none"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-                {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6">
                     <div className="max-w-xl">
                         <motion.div
@@ -70,7 +69,6 @@ export default function HowItWorksSection() {
                     </motion.div>
                 </div>
 
-                {/* Outcome Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                     {outcomes.map((item, i) => (
                         <motion.div

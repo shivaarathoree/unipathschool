@@ -30,7 +30,6 @@ const painPoints = [
 export default function ProblemSection() {
     return (
         <section className="py-20 md:py-32 bg-secondary text-white relative overflow-hidden">
-            {/* Background Effects */}
             <div className="absolute top-0 right-0 w-[30rem] md:w-[40rem] h-[30rem] md:h-[40rem] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
 

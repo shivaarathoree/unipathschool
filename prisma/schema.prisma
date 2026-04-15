@@ -42,6 +42,7 @@ model InterviewFeedback {
   @@index([interviewId])
   @@index([userId])
 }
+<<<<<<< HEAD
 
 model CompanyRequest {
   id          String   @id @default(uuid())
@@ -51,3 +52,5 @@ model CompanyRequest {
   source      String   @default("server-action")
   createdAt   DateTime @default(now()) @map("created_at")
 }
+=======
+>>>>>>> 82f564860b8abb8b2b000933838b2a3bdcfab160

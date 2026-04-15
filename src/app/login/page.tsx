@@ -57,6 +57,7 @@ export default function LoginPage() {
                 className="absolute top-0 left-0 w-[40rem] h-[40rem] bg-primary/5 blur-[120px] rounded-full pointer-events-none z-0"
             />
 
+
             <div className="w-full max-w-lg relative z-10 px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -83,6 +84,7 @@ export default function LoginPage() {
                     className="glass rounded-[2.5rem] p-10 lg:p-14 shadow-2xl border border-white/50 relative overflow-hidden group"
                 >
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-30"></div>
+
 
                     <div className="relative z-10">
                         <div className="mb-10 text-center">

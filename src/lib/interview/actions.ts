@@ -11,8 +11,6 @@ const groq = createGroq({
     apiKey: process.env.GROQ_API_KEY,
 });
 
-// ─── FEEDBACK GENERATION ─────────────────────────────────────
-
 export async function createInterviewFeedback(params: CreateInterviewFeedbackParams) {
     const { interviewId, userId, transcript, feedbackId } = params;
 
@@ -52,9 +50,7 @@ Score the candidate from 0 to 100 in these categories (DO NOT add or rename cate
                 "You are an elite FAANG hiring committee member. Your evaluations are data-driven, citation-heavy, and hold candidates to the highest industry bar. You never give inflated scores. Your feedback reads like a Google HC packet review.",
         });
 
-        // Use Prisma to insert/update feedback
         let feedbackRecord;
-
         const data = {
             interviewId: interviewId,
             userId: userId,
@@ -82,8 +78,6 @@ Score the candidate from 0 to 100 in these categories (DO NOT add or rename cate
         return { success: false, error: error.message || String(error) };
     }
 }
-
-// ─── INTERVIEW CRUD ──────────────────────────────────────────
 
 export async function getInterviewById(id: string): Promise<InterviewRecord | null> {
     try {

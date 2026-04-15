@@ -47,6 +47,7 @@ export default function DashboardPage() {
 
         const controller = new AbortController();
 
+
         const fetchInsights = async () => {
             setIsFetchingAI(true);
             try {

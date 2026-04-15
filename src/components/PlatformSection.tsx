@@ -53,7 +53,6 @@ const features = [
 export default function PlatformSection() {
     return (
         <section id="platform" className="py-20 md:py-32 bg-white relative overflow-hidden border-b border-slate-100">
-            {/* Background Accent */}
             <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6">

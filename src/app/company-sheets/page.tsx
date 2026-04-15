@@ -50,7 +50,7 @@ export default function CompanySheetsPage() {
 
     return (
         <div className="min-h-screen bg-white text-slate-900 relative overflow-hidden flex flex-col">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear_gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:3rem_3rem] z-0"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:3rem_3rem] z-0"></div>
 
             <Header />
 
