@@ -11,7 +11,7 @@ export async function submitCompanyRequest(companyName: string, email: string) {
     const parsed = companyRequestSchema.safeParse({ companyName, email });
 
     if (!parsed.success) {
-        const firstError = parsed.error.errors[0]?.message ?? "Invalid input.";
+        const firstError = parsed.error.issues[0]?.message ?? "Invalid input.";
         return { success: false, error: firstError };
     }
 
