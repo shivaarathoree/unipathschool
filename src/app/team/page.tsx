@@ -25,32 +25,20 @@ const team = [
   },
   {
     name: "D Tejas",
-    role: "Lead Developer",
+    role: "CTO",
     branch: "Computer Science",
     college: "RGIPT",
-    tag: "Builder",
+    tag: "Architect",
     quote:
       "Unipath isn't just a project — it's a proof that small ideas can spark change.",
     image: "/IMG_6634.jpg",
     linkedin: "",
     email: "23cs3023@rgipt.ac.in",
   },
-  {
-    name: "Parth Pandey",
-    role: "Operations Manager",
-    branch: "Information Technology",
-    college: "RGIPT",
-    tag: "Operator",
-    quote:
-      "Unipath taught me that impact begins the moment you decide to do.",
-    image: "/parth.jpg",
-    linkedin: "https://www.linkedin.com/in/parth-pandey-309748290",
-    email: "23it3030@rgipt.ac.in",
-  },
 ];
 
 const stats = [
-  { value: "3", label: "Founders" },
+  { value: "2", label: "Founders" },
   { value: "1", label: "Mission" },
   { value: "∞", label: "Ambition" },
   { value: "0", label: "Excuses" },
@@ -181,7 +169,7 @@ export default function TeamPage() {
               transition={{ delay: 0.25, duration: 0.6 }}
               className="text-lg md:text-xl text-slate-500 font-light leading-relaxed max-w-2xl mx-auto"
             >
-              Three engineers from RGIPT who got tired of the noise and built
+              Two engineers from RGIPT who got tired of the noise and built
               something signal. No funding. No shortcuts. Just conviction.
             </motion.p>
           </div>
@@ -189,13 +177,13 @@ export default function TeamPage() {
 
         {/* ── Team Cards ── */}
         <section className="py-28 bg-white border-b border-slate-100">
-          <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-4xl mx-auto px-6">
             <motion.div
               variants={stagger}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
             >
               {team.map((member) => (
                 <motion.div
@@ -418,8 +406,8 @@ export default function TeamPage() {
                   {
                     icon: "solar:global-bold-duotone",
                     label: "Platform",
-                    value: "unipath-school.vercel.app",
-                    href: "/",
+                    value: "unipathschool.com",
+                    href: "https://unipathschool.com",
                   },
                 ].map((item) => (
                   <div

@@ -53,6 +53,7 @@ const features = [
 export default function PlatformSection() {
     return (
         <section id="platform" className="py-20 md:py-32 bg-white relative overflow-hidden border-b border-slate-100">
+            {/* Background Accent */}
             <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -112,7 +113,7 @@ export default function PlatformSection() {
                                 </div>
 
                                 {feature.badge && (
-                                    <span className="inline-block mb-3 px-3 py-1 rounded-full text-[9px] font-bold tracking-[0.18em] uppercase border border-emerald-200 bg-emerald-50 text-emerald-600">
+                                    <span className="inline-block mb-3 px-3 py-1 rounded-full text-[9px] font-bold tracking-[0.18em] uppercase border border-emerald-200 bg-emerald-50 text-emerald-600 w-fit">
                                         {feature.badge}
                                     </span>
                                 )}

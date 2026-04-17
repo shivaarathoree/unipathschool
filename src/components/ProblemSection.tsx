@@ -13,15 +13,15 @@ const painPoints = [
     },
     {
         num: "02",
-        title: "Your Skills Don't Match What Companies Want",
-        description: "Colleges teach you theory. Hiring teams want proof. That gap — between what you studied and what you can do — costs you interviews.",
+        title: "Your Skills Don\u2019t Match What Companies Want",
+        description: "Colleges teach you theory. Hiring teams want proof. That gap \u2014 between what you studied and what you can do \u2014 costs you interviews.",
         icon: "solar:diagram-down-linear",
         color: "bg-amber-500/10 text-amber-500",
     },
     {
         num: "03",
-        title: "You're Not Bad at Interviews. You're Underprepared.",
-        description: "Real technical interviews don't look like textbook problems. Practising alone, without structured feedback, keeps you stuck.",
+        title: "You\u2019re Not Bad at Interviews. You\u2019re Underprepared.",
+        description: "Real technical interviews don\u2019t look like textbook problems. Practising alone, without structured feedback, keeps you stuck.",
         icon: "solar:close-circle-linear",
         color: "bg-primary/10 text-primary",
     },
@@ -30,6 +30,7 @@ const painPoints = [
 export default function ProblemSection() {
     return (
         <section className="py-20 md:py-32 bg-secondary text-white relative overflow-hidden">
+            {/* Background Effects */}
             <div className="absolute top-0 right-0 w-[30rem] md:w-[40rem] h-[30rem] md:h-[40rem] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
 
@@ -63,7 +64,7 @@ export default function ProblemSection() {
                             transition={{ delay: 0.3 }}
                             className="text-base md:text-lg font-light text-slate-400 max-w-lg leading-relaxed"
                         >
-                            These aren&apos;t rare edge cases — they&apos;re the default experience. UNIPATH was built specifically to fix each one.
+                            These aren&apos;t rare edge cases &mdash; they&apos;re the default experience. UNIPATH was built specifically to fix each one.
                         </motion.p>
                     </div>
                 </div>

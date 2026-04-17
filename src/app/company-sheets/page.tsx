@@ -79,7 +79,7 @@ export default function CompanySheetsPage() {
 
                                 <div className="flex items-start justify-between mb-6 relative z-10">
                                     <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center shrink-0 shadow-lg shadow-slate-900/10 group-hover:scale-110 transition-transform">
-                                        <IconifyIcon icon={company.icon} className={`text-2xl ${company.iconColor || 'text-white'}`} />
+                                        <IconifyIcon icon={company.icon} className={`text-2xl ${(company as any).iconColor || 'text-white'}`} />
                                     </div>
                                     <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest">
                                         {company.difficulty}
@@ -96,12 +96,12 @@ export default function CompanySheetsPage() {
                                         Updated Weekly
                                     </span>
                                     {hasQuestions ? (
-                                        <div className="bg-primary hover:bg-primary-dark text-white text-[10px] px-6 py-3 rounded-full font-bold uppercase tracking-widest transition-all flex items-center gap-2">
+                                        <Link href="/pricing" className="bg-primary hover:bg-primary-dark text-white text-[10px] px-6 py-3 rounded-full font-bold uppercase tracking-widest transition-all flex items-center gap-2">
                                             Start Practicing
                                             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                             </svg>
-                                        </div>
+                                        </Link>
                                     ) : (
                                         <div className="bg-slate-50 hover:bg-slate-900 hover:text-white text-slate-500 text-[10px] px-6 py-3 rounded-full font-bold uppercase tracking-widest transition-all flex items-center gap-2 group/btn">
                                             Coming Soon
@@ -112,16 +112,15 @@ export default function CompanySheetsPage() {
                         );
 
                         return hasQuestions ? (
-                            <Link key={company.name} href={`/company-sheets/${company.slug}`} className="no-underline text-inherit">
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className="glass rounded-[2rem] p-8 border border-white/50 hover:border-primary/30 transition-all duration-500 hover:shadow-xl group cursor-pointer relative overflow-hidden h-full"
-                                >
-                                    {cardContent}
-                                </motion.div>
-                            </Link>
+                            <motion.div
+                                key={company.name}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: i * 0.1 }}
+                                className="glass rounded-[2rem] p-8 border border-white/50 hover:border-primary/30 transition-all duration-500 hover:shadow-xl group cursor-pointer relative overflow-hidden h-full"
+                            >
+                                {cardContent}
+                            </motion.div>
                         ) : (
                             <motion.div
                                 key={company.name}
@@ -150,7 +149,7 @@ export default function CompanySheetsPage() {
                                 Which company should we add next?
                             </h2>
                             <p className="text-slate-400 text-sm font-light leading-relaxed mb-8 max-w-lg mx-auto">
-                                Submit a company name and we&apos;ll gather the most frequently asked interview questions for it. We&apos;re curating the complete collection!
+                                Submit a company name and we'll gather the most frequently asked interview questions for it. We're curating the complete collection!
                             </p>
 
                             {submitStatus === "success" ? (
@@ -160,7 +159,7 @@ export default function CompanySheetsPage() {
                                     className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-2xl flex items-center justify-center gap-3 max-w-sm mx-auto"
                                 >
                                     <IconifyIcon icon="solar:check-circle-bold-duotone" className="text-2xl" />
-                                    <span className="text-sm font-medium">Thanks! We&apos;ve received your request.</span>
+                                    <span className="text-sm font-medium">Thanks! We've received your request.</span>
                                 </motion.div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-sm mx-auto">

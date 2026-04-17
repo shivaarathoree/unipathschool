@@ -7,6 +7,7 @@ import IconifyIcon from "./IconifyIcon";
 export default function CTASection() {
     return (
         <section className="py-20 md:py-32 bg-slate-950 text-white relative overflow-hidden">
+            {/* Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(194,65,12,0.3) 1px, transparent 0)', backgroundSize: '2.5rem 2.5rem' }}></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[30rem] bg-primary/10 blur-[150px] rounded-full z-0 pointer-events-none"></div>
 

@@ -6,8 +6,10 @@ import { motion } from "framer-motion";
 export default function HeroSection() {
     return (
         <section className="relative min-h-screen pt-28 pb-16 lg:pt-48 lg:pb-32 overflow-hidden bg-white flex items-center">
+            {/* AI Grid & Background Effects */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_70%,transparent_100%)] z-0"></div>
 
+            {/* Fluid Glow Orbs */}
             <motion.div
                 animate={{ rotate: 360, scale: [1, 1.1, 1] }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -20,6 +22,7 @@ export default function HeroSection() {
             />
 
             <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center relative z-10">
+                {/* Left: Text content */}
                 <div className="relative z-10 flex flex-col items-start">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

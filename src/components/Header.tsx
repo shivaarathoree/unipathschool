@@ -27,7 +27,7 @@ export default function Header() {
                     className="max-w-6xl w-full glass rounded-full h-14 sm:h-16 flex items-center justify-between px-2 pr-3 sm:pr-4 pointer-events-auto group/nav shadow-[0_0.5rem_2rem_rgba(15,23,42,0.05)] border border-white/50"
                 >
                     {/* Logo */}
-                    <div className="flex items-center pl-4 sm:pl-6 cursor-pointer group/logo relative">
+                    <div className="flex items-center pl-4 sm:pl-6 cursor-pointer group/logo relative shrink-0">
                         <Link href="/" className="flex items-center gap-3 relative z-10">
                             <div className="flex items-center">
                                 <span className="w-4 h-px bg-slate-900 mr-2 group-hover/logo:w-6 group-hover/logo:bg-primary transition-all duration-500 ease-out"></span>
@@ -61,7 +61,7 @@ export default function Header() {
                         {user ? (
                             <Link
                                 href="/dashboard"
-                                className="hidden sm:flex relative items-center justify-center px-6 py-2.5 text-xs font-medium text-white bg-slate-900 rounded-full overflow-hidden group/btn shadow-sm hover:shadow-lg transition-all duration-500"
+                                className="hidden sm:flex relative items-center justify-center px-5 sm:px-6 py-2.5 text-xs font-medium text-white bg-slate-900 rounded-full overflow-hidden group/btn shadow-sm hover:shadow-lg transition-all duration-500"
                             >
                                 <div className="absolute inset-0 w-0 bg-primary transition-all duration-500 ease-out group-hover/btn:w-full z-0"></div>
                                 <span className="relative z-10 flex items-center gap-2 tracking-wider uppercase">
@@ -79,7 +79,7 @@ export default function Header() {
                                 </Link>
                                 <Link
                                     href="/login?redirect=career-discovery"
-                                    className="hidden sm:flex relative items-center justify-center px-6 py-2.5 text-xs font-medium text-white bg-slate-900 rounded-full overflow-hidden group/btn shadow-sm hover:shadow-lg transition-all duration-500"
+                                    className="hidden sm:flex relative items-center justify-center px-5 sm:px-6 py-2.5 text-xs font-medium text-white bg-slate-900 rounded-full overflow-hidden group/btn shadow-sm hover:shadow-lg transition-all duration-500"
                                 >
                                     <div className="absolute inset-0 w-0 bg-primary transition-all duration-500 ease-out group-hover/btn:w-full z-0"></div>
                                     <span className="relative z-10 flex items-center gap-2 tracking-wider uppercase">
@@ -111,7 +111,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="fixed top-[5rem] left-4 right-4 sm:left-6 sm:right-6 z-40 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-[2rem] shadow-2xl shadow-slate-900/10 overflow-hidden pointer-events-auto"
+                        className="fixed top-[5rem] left-4 right-4 sm:left-6 sm:right-6 z-40 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-[2rem] shadow-2xl shadow-slate-900/10 overflow-hidden pointer-events-auto md:hidden"
                     >
                         <nav className="flex flex-col p-4 gap-1">
                             {navLinks.map((link) => (

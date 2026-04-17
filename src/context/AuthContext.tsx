@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
-    const [isPro, setIsPro] = useState(true);
+    const [isPro, setIsPro] = useState(true); // Default to true for testing as requested by user
 
     const fetchProfile = async (uid: string) => {
         try {
@@ -40,25 +40,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (localData) {
                 const parsed = JSON.parse(localData);
                 setProfile(parsed);
+                // setIsPro(parsed.isPro || false); // Overridden to true for testing
             }
+
             const docRef = doc(db, "users", uid);
             const fetchPromise = getDoc(docRef);
             const timeoutPromise = new Promise<{ exists: () => false }>((resolve) =>
                 setTimeout(() => resolve({ exists: () => false }), 5000)
             );
             const docSnap = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
             if (docSnap && docSnap.exists && docSnap.exists()) {
                 const fetchedData = docSnap.data() as UserProfile;
                 setProfile(fetchedData);
+                // setIsPro(fetchedData.isPro || false); // Overridden to true for testing
                 localStorage.setItem(`unipath_profile_${uid}`, JSON.stringify(fetchedData));
             } else if (!localData) {
                 setProfile(null);
+                // setIsPro(false); // Overridden to true for testing
             }
         } catch (e) {
             console.warn("Could not fetch profile (offline/blocked), using fallback.", e);
             const localData = localStorage.getItem(`unipath_profile_${uid}`);
             if (!localData) {
                 setProfile(null);
+                // setIsPro(false); // Overridden to true for testing
             }
         }
     };
@@ -89,6 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 await fetchProfile(currentUser.uid);
             } else {
                 setProfile(null);
+                // setIsPro(false); // Overridden to true for testing
             }
             setLoading(false);
         });
@@ -97,9 +104,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
+
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
+
+            // Try to update Firestore, but don't fail the login if it's offline
             try {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (!userDoc.exists()) {
@@ -132,7 +142,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const setLocalProfile = (p: UserProfile) => {
-        const profileWithPro = { ...p, isPro: true };
+        const profileWithPro = { ...p, isPro: true }; // Force pro for local profile too
         setProfile(profileWithPro);
         setIsPro(true);
         if (user) {

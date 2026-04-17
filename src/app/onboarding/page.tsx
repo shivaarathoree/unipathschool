@@ -36,9 +36,9 @@ export default function OnboardingPage() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Pre-fill form if user is updating an existing profile
     useEffect(() => {
         if (profile) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData({
                 industry: profile.industry || "",
                 experience: profile.experience || "",
@@ -49,6 +49,7 @@ export default function OnboardingPage() {
     }, [profile]);
 
     useEffect(() => {
+        // Only redirect completely unauthenticated users to login
         if (!loading && !user) {
             router.push("/login");
         }
@@ -244,7 +245,7 @@ const Step1 = ({ formData, handleChange }: { formData: { industry: string }, han
                 className="w-full pl-20 pr-12 py-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-medium focus:outline-none focus:border-primary/30 focus:bg-white transition-all appearance-none"
             >
                 <option value="" disabled>Select an industry</option>
-                {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
+                {["Technology", "Financial Services", "Healthcare & Life Sciences", "Manufacturing & Industrial", "Retail & E-commerce", "Media & Entertainment", "Education & Training", "Energy & Utilities", "Professional Services", "Telecommunications"].map((ind) => <option key={ind} value={ind}>{ind}</option>)}
             </select>
             <IconifyIcon icon="solar:alt-arrow-down-linear" className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
         </div>

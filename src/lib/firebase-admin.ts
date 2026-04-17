@@ -11,6 +11,7 @@ function initFirebaseAdmin() {
             console.error("❌ [Firebase Admin] Missing credentials! Firestore Admin operations will fail.");
         } else {
             try {
+                // Ensure properly formatted key (handles Vercel stringified newlines)
                 const formattedKey = serverEnv.FIREBASE_PRIVATE_KEY.includes('\\n')
                     ? serverEnv.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
                     : serverEnv.FIREBASE_PRIVATE_KEY;
@@ -30,6 +31,7 @@ function initFirebaseAdmin() {
     }
 
     const db = getFirestore();
+    // Setting ignoreUndefinedProperties allows us to pass partial objects safely without crashing 
     db.settings({ ignoreUndefinedProperties: true });
 
     return {

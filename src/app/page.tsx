@@ -3,9 +3,10 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import dynamic from "next/dynamic";
 
+// Lazy load below-the-fold components to reduce initial JavaScript payload size and achieve lightning-fast LCP
 const FaangRoadmapSection = dynamic(() => import("@/components/FaangRoadmapSection"));
 const MarqueeSection = dynamic(() => import("@/components/MarqueeSection"));
-const ProblemSection = dynamic(() => import("@/components/ProblemSection"));
+const CompanyPracticeSection = dynamic(() => import("@/components/CompanyPracticeSection"));
 const PlatformSection = dynamic(() => import("@/components/PlatformSection"));
 const DeepDiveSection = dynamic(() => import("@/components/DeepDiveSection"));
 const HowItWorksSection = dynamic(() => import("@/components/HowItWorksSection"));
@@ -21,7 +22,7 @@ export default function Home() {
         <HeroSection />
         <FaangRoadmapSection />
         <MarqueeSection />
-        <ProblemSection />
+        <CompanyPracticeSection />
         <PlatformSection />
         <DeepDiveSection />
         <HowItWorksSection />

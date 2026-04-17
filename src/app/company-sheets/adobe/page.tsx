@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useAuth } from "@/context/AuthContext";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ProFeatureGate from "@/components/ProFeatureGate";
 import { motion } from "framer-motion";
 
 type Difficulty = "Easy" | "Medium" | "Hard";
@@ -130,9 +134,26 @@ const COMPANY_PRIMARY = "#FF0000"; // Adobe Red
 const COMPANY_NAME = "Adobe";
 
 export default function AdobeQuestionsPage() {
+    const { user, profile, loading, isPro } = useAuth();
     const [search, setSearch] = useState("");
     const [diffFilter, setDiffFilter] = useState<"All" | Difficulty>("All");
     const [catFilter, setCatFilter] = useState<"All" | Category>("All");
+
+    if (loading) {
+        return (
+            <div className="flex flex-col min-h-screen bg-white">
+                <Header />
+                <main className="flex-grow flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (!user || !profile || !isPro) {
+        return <ProFeatureGate title="Adobe Interview Sheet" />;
+    }
 
     const filtered = useMemo(() => {
         return questions.filter((q) => {

@@ -12,10 +12,12 @@ const firebaseConfig = {
     appId: clientEnv.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Initialize Firebase only if it hasn't been initialized already
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
 
+// Use persistent offline cache so it acts instantly and recovers from network failures
 export const db = initializeFirestore(app, {
     localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
