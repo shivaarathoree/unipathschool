@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 1. Users Collection (Row-level security)
+    match /users/{userId} {
+      // Users can only read and write their own documents
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 2. Company Requests
+    match /companyRequests/{requestId} {
+      // Anyone can create a request (limited to required fields)
+      allow create: if 
+        request.resource.data.keys().hasAll(['companyName', 'status', 'createdAt', 'source']) &&
+        request.resource.data.companyName is string &&
+        request.resource.data.companyName.size() > 0 &&
+        request.resource.data.companyName.size() <= 100;
+
+      // Only authenticated users (admins) can read or modify requests
+      allow read, update, delete: if request.auth != null && request.auth.token.role == 'admin';
+    }
+
+    // 3. AI Interviews & Feedback (Linked to users)
+    match /interviews/{interviewId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+  }
+}

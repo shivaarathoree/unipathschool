@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /pricing
+Allow: /team
+
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /ai-interview
+Disallow: /career-discovery
+Disallow: /company-sheets
+Disallow: /faang-roadmap
+Disallow: /api/
+
+Sitemap: https://unipathschool.com/sitemap.xml
