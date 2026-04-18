@@ -178,7 +178,7 @@ function FaangRoadmapDashboard() {
     return (
         <div className="flex flex-col min-h-screen bg-white">
             <Header />
-            <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+            <main className="flex-grow pt-28 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-5xl mx-auto w-full">
                     <div className="flex items-center justify-between mb-10 pb-8 border-b border-slate-100">
                         <div>
@@ -246,6 +246,22 @@ function FaangRoadmapDashboard() {
                                             : <><IconifyIcon icon="solar:magic-stick-3-bold" className="text-lg" /> Generate AI Study Plan</>
                                     }
                                 </button>
+
+                                {/* Company Sheets CTA */}
+                                <div className="border-t border-slate-100 pt-6 space-y-3">
+                                    <p className="text-sm font-semibold text-slate-800 leading-snug">
+                                        Now you know your gaps — solve them with the right questions.
+                                    </p>
+                                    <p className="text-xs text-slate-500 leading-relaxed">
+                                        Practice real interview questions asked at companies matching your target role. Curated by topic, not random grinding.
+                                    </p>
+                                    <Link
+                                        href="/company-sheets"
+                                        className="w-full block text-center py-3 rounded-full border border-slate-800 text-slate-900 text-xs font-bold uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all duration-300"
+                                    >
+                                        Practice Company Questions →
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="lg:col-span-8 space-y-8">

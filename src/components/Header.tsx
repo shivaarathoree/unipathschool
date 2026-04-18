@@ -10,7 +10,7 @@ const navLinks = [
     { label: "Platform", href: "/#platform" },
     { label: "School",   href: "/#schools" },
     { label: "Pricing",  href: "/#pricing" },
-    { label: "Team",     href: "/team" },
+    { label: "Contact",  href: "/team" },
 ];
 
 export default function Header() {

@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import RazorpayButton from "./RazorpayButton";
 
-const freePlanFeatures = ["Career Path Discovery", "Basic Career Roadmap", "ATS Resume Builder", "Limited AI Analysis"];
-const proPlanFeatures = ["Unlimited AI Mock Interviews", "Skill Gap Detection Engine", "Personalized Skill Roadmaps", "Career Readiness Score", "Advanced Resume Optimization"];
+const freePlanFeatures = ["AI Career Discovery", "Basic Career Roadmap", "1 Free AI Mock Interview", "Limited Company Insights"];
+const proPlanFeatures = ["5 AI Mock Interviews / Month", "All Company Question Sheets", "FAANG Preparation Roadmap", "Full AI Career Discovery", "Priority Feature Access"];
 
 export default function PricingSection() {
     return (
@@ -32,7 +32,7 @@ export default function PricingSection() {
                             </div>
                             <div className="mb-8 md:mb-10">
                                 <h3 className="text-xl md:text-2xl font-semibold font-heading text-slate-900 mb-2 tracking-tight uppercase">Explorer</h3>
-                                <p className="text-sm text-slate-500 mb-6 md:mb-8 font-light">Begin your journey with zero commitment.</p>
+                                <p className="text-sm text-slate-500 mb-6 md:mb-8 font-light">Explore and discover your path — no card needed.</p>
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-4xl md:text-5xl text-slate-900 font-semibold font-heading tracking-tighter">&#8377;0</span>
                                     <span className="text-xs text-slate-400 uppercase tracking-widest font-bold">/ forever</span>
@@ -62,7 +62,7 @@ export default function PricingSection() {
                             </div>
                             <div className="mb-8 md:mb-10">
                                 <h3 className="text-xl md:text-2xl font-semibold font-heading text-white mb-2 tracking-tight uppercase">Pro Membership</h3>
-                                <p className="text-sm text-slate-400 mb-6 md:mb-8 font-light">Full transparency. Future-proof your career.</p>
+                                <p className="text-sm text-slate-400 mb-6 md:mb-8 font-light">Company Sheets + AI Interviews. Everything you need to crack placements.</p>
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-4xl md:text-5xl text-white font-semibold font-heading tracking-tighter">&#8377;499</span>
                                     <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">/ month</span>
